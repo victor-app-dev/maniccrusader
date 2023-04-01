@@ -11,17 +11,24 @@
   list-style-type: none;
   margin: 0;
   padding: 0;
+  width: 70px;
+
 }
 .dropdown:hover .dropdown-content {
   display: block;
 }
-.dropdown-content li {
+.dropdown-content p {
   display: block;
   color: #000000;
   padding: 5px;
   text-decoration: none;
 }
-.dropdown-content li:hover {
+.dropdown-content p:hover {
   color: #FFFFFF;
   background-color: #00A4BD;
+}
+
+.userAccountImg{
+  border-radius: 50%;
+  width: 30px;
 }
