@@ -2,7 +2,7 @@ import React, { useState } from "react";
 function LandingPage() {
   const [stores, setStores] = useState(null)
   async function auth0Code() {
-      fetch('http://127.0.0.1:8000/api/stores/')
+      fetch('maniccrusader-preprod-api.onrender.com/api/stores/')
     .then(response => response.json())
     .then(data => {
       setStores(data); // Do something with the response data here
