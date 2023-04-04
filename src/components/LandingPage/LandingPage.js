@@ -2,7 +2,7 @@ import React, { useState } from "react";
 function LandingPage() {
   const [stores, setStores] = useState(null)
   async function auth0Code() {
-      fetch('maniccrusader-preprod-api.onrender.com/api/stores/')
+      fetch('https://maniccrusader-preprod-api.onrender.com/api/stores/')
     .then(response => response.json())
     .then(data => {
       setStores(data); // Do something with the response data here
