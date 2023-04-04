@@ -1,4 +1,4 @@
-import React from "react";
+import React,{} from "react";
 import Nav from "./components/Nav";
 import { Route, Routes } from "react-router-dom";
 import LandingPage from "./components/LandingPage/LandingPage";
