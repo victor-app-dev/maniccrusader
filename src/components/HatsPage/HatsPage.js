@@ -1,9 +1,12 @@
-import React,{} from "react"
+import React from "react";
+import ProductContainer from "../Product/ProductContainer";
+import { ProductContextProvider } from "../Context/useProduct";
 function HatsPage() {
-  
   return (
     <>
-        Shows hats
+      <ProductContextProvider fetchType="hats">
+        <ProductContainer />
+      </ProductContextProvider>
     </>
   );
 }

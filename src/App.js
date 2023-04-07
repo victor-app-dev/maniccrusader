@@ -5,9 +5,11 @@ import LandingPage from "./components/LandingPage/LandingPage";
 import ShirtsPage from "./components/ShirtsPages/ShirtsPage";
 import HoodiesPage from "./components/HoodiesPage/HoodiesPage";
 import HatsPage from "./components/HatsPage/HatsPage";
+import Banner from "./components/Banner";
 function App() {
   return (
     <>
+      <Banner />
       <Nav />
       <div>
         <Routes>
