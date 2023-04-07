@@ -14,16 +14,16 @@ export const ProductContextProvider = ({ context, children, fetchType }) => {
         let url;
         switch (fetchType) {
           case "tshirts":
-            url = "http://127.0.0.1:8000/api/products-tshirts/";
+            url = "https://maniccrusader-preprod-api.onrender.com/api/products-tshirts/";
             break;
           case "hoodies":
-            url = "http://127.0.0.1:8000/api/products-hoodies/";
+            url = "https://maniccrusader-preprod-api.onrender.com/api/products-hoodies/";
             break;
           case "hats":
-            url = "http://127.0.0.1:8000/api/products-hats/";
+            url = "https://maniccrusader-preprod-api.onrender.com/api/products-hats/";
             break;
           default:
-            url = "http://127.0.0.1:8000/api/products/";
+            url = "https://maniccrusader-preprod-api.onrender.com/api/products/";
         }
         const response = await fetch(url);
         const data = await response.json();
