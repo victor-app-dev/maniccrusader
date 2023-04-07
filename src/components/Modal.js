@@ -4,7 +4,7 @@ import "./Styles/StyleModal.css";
 export default function Modal(props) {
     const [ProductDetails, setProductsDetails] = useState(null);
     useEffect(() => {
-          fetch(`http://127.0.0.1:8000/api/products-details/${props.selectedId}/`)
+          fetch(`https://maniccrusader-preprod-api.onrender.com/api/products-details/${props.selectedId}/`)
             .then(response => response.json())
             .then(data => {
               setProductsDetails(data);
