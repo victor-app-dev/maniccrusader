@@ -17,7 +17,6 @@ export default function ProductContainer(p) {
       <div className="ProductContainer" key={product.id} onClick={() => handleProductClick(product)}>
         <img alt="1" width={"100px"} src={product.thumbnail_url} />
         <h4>{product.name}</h4>
-        <p>£HOLDER_PRICE</p>
       </div>
     ));
   } else {
@@ -28,9 +27,7 @@ export default function ProductContainer(p) {
     <>
       {mappedProducts}
       {selectedProduct && (
-        <Modal selectedId={selectedProduct.id} onClose={() => setSelectedProduct(null)}>
-          <p>Selected product id: {selectedProduct.id}</p>
-        </Modal>
+        <Modal selectedId={selectedProduct.id} onClose={() => setSelectedProduct(null)}/>
       )}
     </>
   );
