@@ -7,6 +7,7 @@ export const useProduct = () => {
 export const ProductContext = createContext(undefined);
 
 export const ProductContextProvider = ({ context, children, fetchType }) => {
+  const API_URL = process.env.REACT_APP_API_URL
   const [products, setProducts] = useState(null);
   useEffect(() => {
     async function getProducts() {
@@ -14,16 +15,16 @@ export const ProductContextProvider = ({ context, children, fetchType }) => {
         let url;
         switch (fetchType) {
           case "tshirts":
-            url = "https://maniccrusader-preprod-api.onrender.com/api/products-tshirts/";
+            url = API_URL+"products-tshirts/";
             break;
           case "hoodies":
-            url = "https://maniccrusader-preprod-api.onrender.com/api/products-hoodies/";
+            url = API_URL+"products-hoodies/";
             break;
           case "hats":
-            url = "https://maniccrusader-preprod-api.onrender.com/api/products-hats/";
+            url = API_URL+"products-hats/";
             break;
           default:
-            url = "https://maniccrusader-preprod-api.onrender.com/api/products/";
+            url = API_URL+"products/";
         }
         const response = await fetch(url);
         const data = await response.json();
@@ -33,7 +34,7 @@ export const ProductContextProvider = ({ context, children, fetchType }) => {
       }
     }
     getProducts();
-  }, [fetchType]);
+  }, [fetchType,API_URL]);
 
   let mappedProducts = null;
   if (products && products.result) {
