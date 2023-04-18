@@ -10,6 +10,7 @@ export default function Nav() {
         <NavItem to="/t-shirts">t-shirts</NavItem>
         <NavItem to="/hats">hats</NavItem>
         <NavItem to="/hoodies">hoodies</NavItem>
+        <NavItem to="/cart">Cart</NavItem>
         <li className="account"><Account /></li>
       </ul>
     </nav>
