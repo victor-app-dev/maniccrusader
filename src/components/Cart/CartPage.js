@@ -1,4 +1,4 @@
-import React,{} from "react";
+import React from "react";
 import { useCartContext } from "../Context/useCart";
 import CartItemModal from "./CartItemModal";
 
@@ -7,7 +7,7 @@ function CartPage() {
   const removeItem = (id) => {
     cart.removeFromBasket(id);
   };
-  
+
   // create an object with the items and their quantities
   const cartItems = cart.addedToBasket.reduce((acc, item) => {
     const itemId = item?.result?.id;
@@ -27,7 +27,7 @@ function CartPage() {
         <div key={index}>
           <img
             width="200px"
-            src={item?.result?.product?.image}
+            src={item?.result?.files[1]?.preview_url}
             alt={item?.result?.name}
           />
           <h2>
@@ -37,18 +37,22 @@ function CartPage() {
           <button type="button" onClick={() => removeItem(item.result.id)}>
             Remove
           </button>
-          <button onClick={() => {cart.setSelectedEditItem(item)}} type="button">Edit</button>
+          <button
+            onClick={() => {
+              cart.setSelectedEditItem(item);
+              cart.setEditQty(cartItems[item?.result?.id]?.quantity || 1);
+            }}
+            type="button"
+          >
+            Edit
+          </button>
         </div>
       ))}
       {cart.addedToBasket.length > 0 && (
         <button type="button"> Checkout</button>
       )}
-      { cart.selectedEditItem &&
-      <CartItemModal/>
-      }
-      <div>
-        Total: £{cart.priceExclShipping} Excluding shipping.
-      </div>
+      {cart.selectedEditItem && <CartItemModal />}
+      <div>Total: £{cart.priceExclShipping} Excluding shipping.</div>
     </>
   );
 }

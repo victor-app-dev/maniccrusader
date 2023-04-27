@@ -90,7 +90,7 @@ export const CartContextProvider = ({ context, children}) => {
   const [variant_id, setVariant_id] = useState(null);
   const [priceExclShipping, setPriceExclShipping] = useState(null);
   const [selectedEditItem, setSelectedEditItem] = useState(null)
-  const [editQty, setEditQty] = useState("");
+  const [editQty, setEditQty] = useState(1);
   const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
