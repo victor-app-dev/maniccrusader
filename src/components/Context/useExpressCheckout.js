@@ -5,7 +5,7 @@ export const ExpressCheckoutContext = createContext(undefined);
 export const ExpressCheckoutContextProvider = ({ context, children }) => {
     const [variant_id, setVariant_id] = useState(null);
     const [expressBasket, setExpressBasket] = useState([]);
-    const [expressEditQty, setExpressEditQty] = useState("");
+    const [expressEditQty, setExpressEditQty] = useState(1);
     const [selectedEditItem, setSelectedEditItem] = useState(null)
     const [priceExclShippingExpress, setPriceExclShippingExpress] = useState(null);
 
@@ -18,7 +18,7 @@ export const ExpressCheckoutContextProvider = ({ context, children }) => {
           }
           setExpressBasket(newBasket); // set the new basket array as the updated basket state
           setVariant_id(null);
-          setExpressEditQty("");
+          setExpressEditQty("")
         }
       }, [variant_id, expressEditQty, expressBasket]);
       function removeFromBasket(id) {

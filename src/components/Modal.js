@@ -4,15 +4,12 @@ import { useCartContext } from "./Context/useCart";
 import { useExpressCheckoutContext } from "./Context/useExpressCheckout";
 import { Link } from "react-router-dom";
 
-
 export default function Modal(props) {
   const [productDetails, setProductsDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const API_URL = process.env.REACT_APP_API_URL;
-  const cart = useCartContext()
-  const express = useExpressCheckoutContext()
-
-  
+  const cart = useCartContext();
+  const express = useExpressCheckoutContext();
 
   useEffect(() => {
     fetch(`${API_URL}products-details/${props.selectedId}/`)
@@ -28,6 +25,7 @@ export default function Modal(props) {
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedVariantId, setSelectedVariantId] = useState(null);
   const [selectedVariantPrice, setSelectedVariantPrice] = useState(null);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   let colorOptions = [];
   let sizeOptions = [];
@@ -56,10 +54,20 @@ export default function Modal(props) {
         selectedVariant = productDetails.result.sync_variants.find((variant) =>
           variant.name.includes(selectedColor)
         );
+        // eslint-disable-next-line
+        sizeOptions = productDetails.result.sync_variants
+          .filter((variant) => variant.name.includes(selectedColor))
+          .map((variant) => variant.name.split(" / ")[1])
+          .filter((size, index, self) => self.indexOf(size) === index);
       } else if (selectedSize) {
         selectedVariant = productDetails.result.sync_variants.find((variant) =>
           variant.name.includes(selectedSize)
         );
+        // eslint-disable-next-line
+        colorOptions = productDetails.result.sync_variants
+          .filter((variant) => variant.name.includes(selectedSize))
+          .map((variant) => variant.name.split(" / ")[0])
+          .filter((color, index, self) => self.indexOf(color) === index);
       }
       if (!selectedVariant) {
         selectedVariant = productDetails.result.sync_variants[0];
@@ -84,33 +92,42 @@ export default function Modal(props) {
   useEffect(() => {
     if (productDetails && productDetails.result.sync_variants.length === 1) {
       setSelectedVariantId(productDetails.result.sync_variants[0].id);
-      setSelectedVariantPrice(productDetails.result.sync_variants[0].retail_price);
+      setSelectedVariantPrice(
+        productDetails.result.sync_variants[0].retail_price
+      );
     }
   }, [productDetails]);
 
-  function fetchVariantOnAdd(){
-    selectedVariantId && fetch(`${API_URL}variant-details/${selectedVariantId}/`)
-      .then((response) => response.json())
-      .then((data) => {
-        cart.setVariant_id(data);
-      })
-      .catch((error) => console.error(error));
+  function fetchVariantOnAdd() {
+    setIsButtonDisabled(true);
+    setTimeout(() => {
+      setIsButtonDisabled(false);
+    }, 1000);
+    selectedVariantId &&
+      fetch(`${API_URL}variant-details/${selectedVariantId}/`)
+        .then((response) => response.json())
+        .then((data) => {
+          cart.setVariant_id(data);
+        })
+        .catch((error) => console.error(error));
+  }
 
-}
+  //Express checkout logic START
+  function fetchVariantOnAddEXPRESS() {
+    selectedVariantId &&
+      fetch(`${API_URL}variant-details/${selectedVariantId}/`)
+        .then((response) => response.json())
+        .then((data) => {
+          express.setVariant_id(data);
+        })
+        .catch((error) => console.error(error));
+  }
+  //Express checkout logic END
 
-
-//Express checkout logic START
-function fetchVariantOnAddEXPRESS(){
-  selectedVariantId && fetch(`${API_URL}variant-details/${selectedVariantId}/`)
-    .then((response) => response.json())
-    .then((data) => {
-      express.setVariant_id(data);
-      console.log(data)
-    })
-    .catch((error) => console.error(error));
-
-}
-//Express checkout logic END
+  if (selectedColor === "" && selectedSize === "") {
+    setSelectedColor(colorOptions[0]);
+    setSelectedSize(sizeOptions[0]);
+  }
 
   return (
     <div className="modal">
@@ -122,22 +139,36 @@ function fetchVariantOnAddEXPRESS(){
         {!loading && (
           <div>
             <h1>{productDetails.result.sync_product.name}</h1>
-            <img alt="product" width="350px" src={productDetails.result.sync_product.thumbnail_url} />
+            <img
+              alt="product"
+              width="350px"
+              src={productDetails.result.sync_product.thumbnail_url}
+            />
             <p>£{selectedVariantPrice}</p>
             <form>
               <div>
                 <span>Color:</span>
                 {colorOptions.map((color, index) => (
                   <label key={index}>
-                    { color ?
-                    <input
-                      type="radio"
-                      name="color"
-                      value={color}
-                      checked={selectedColor === color}
-                      onChange={handleVariantChange}
-                    /> : " no options"}
-                    {color} 
+                    {color ? (
+                      <input
+                        type="radio"
+                        name="color"
+                        value={color}
+                        checked={selectedColor === color}
+                        onChange={handleVariantChange}
+                        disabled={
+                          !productDetails.result.sync_variants.some(
+                            (variant) =>
+                              variant.name.includes(selectedSize) &&
+                              variant.name.includes(color)
+                          )
+                        }
+                      />
+                    ) : (
+                      " no options"
+                    )}
+                    {color}
                   </label>
                 ))}
               </div>
@@ -145,27 +176,50 @@ function fetchVariantOnAddEXPRESS(){
                 <span>Size:</span>
                 {sizeOptions.map((size, index) => (
                   <label key={index}>
-                    { size ?
-                    <input
-                      type="radio"
-                      name="size"
-                      value={size}
-                      checked={selectedSize === size}
-                      onChange={handleVariantChange}
-                    /> : " no options"}
+                    {size ? (
+                      <input
+                        type="radio"
+                        name="size"
+                        value={size}
+                        checked={selectedSize === size}
+                        onChange={handleVariantChange}
+                        disabled={
+                          !productDetails.result.sync_variants.some(
+                            (variant) =>
+                              variant.name.includes(selectedColor) &&
+                              variant.name.includes(size)
+                          )
+                        }
+                      />
+                    ) : (
+                      " no options"
+                    )}
                     {size}
                   </label>
                 ))}
               </div>
             </form>
-            
-            <button onClick={fetchVariantOnAdd} type="button">ADD TO CART</button>
+
+            <button
+              onClick={fetchVariantOnAdd}
+              type="button"
+              disabled={isButtonDisabled}
+            >
+              {isButtonDisabled ? "Adding..." : "ADD TO CART"}
+            </button>
             <Link to="/express-checkout">
-            <button onClick={fetchVariantOnAddEXPRESS} type="button">EXPRESS CHECKOUT</button>
+              <button
+                onClick={() => {
+                  fetchVariantOnAddEXPRESS();
+                }}
+                type="button"
+              >
+                EXPRESS CHECKOUT
+              </button>
             </Link>
           </div>
         )}
       </div>
     </div>
-  );  
+  );
 }
