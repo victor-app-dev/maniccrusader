@@ -22,7 +22,6 @@ export default function ProductContainer(p) {
   } else {
     mappedProducts = <p>Loading...</p>;
   }
-  console.log(selectedProduct)
   return (
     <>
       {mappedProducts}

@@ -106,13 +106,11 @@ export const CartContextProvider = ({ context, children}) => {
   }, [variant_id, editQty]);
   useEffect(() => {
     const sum = addedToBasket.reduce((acc, item) => {
-      const retailPrice = parseInt(item.result.retail_price);
+      const retailPrice = parseFloat(item.result.retail_price);
       return acc + retailPrice;
     }, 0);
-    setPriceExclShipping(sum);
+    setPriceExclShipping(sum.toFixed(2));
   }, [addedToBasket]);
-  
-
   let contextData = {
     variant_id: variant_id,
     setVariant_id: setVariant_id,

@@ -1,6 +1,7 @@
 import React from "react";
 import { useCartContext } from "../Context/useCart";
 import CartItemModal from "./CartItemModal";
+import { Link } from "react-router-dom";
 
 function CartPage() {
   const cart = useCartContext();
@@ -49,7 +50,9 @@ function CartPage() {
         </div>
       ))}
       {cart.addedToBasket.length > 0 && (
+        <Link to="/checkout">
         <button type="button"> Checkout</button>
+        </Link>
       )}
       {cart.selectedEditItem && <CartItemModal />}
       <div>Total: £{cart.priceExclShipping} Excluding shipping.</div>

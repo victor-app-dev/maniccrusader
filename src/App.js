@@ -8,7 +8,8 @@ import HatsPage from "./components/HatsPage/HatsPage";
 import Banner from "./components/Banner";
 import CartPage from "./components/Cart/CartPage";
 import ExpressCheckoutPage from "./components/ExpressCheckout/ExpressCheckoutPage";
-
+import CheckoutPageE from "./components/Checkouts/CheckoutPageE";
+import CheckoutPageN from "./components/Checkouts/CheckoutPageN";
 
 function App() {
 
@@ -24,6 +25,8 @@ function App() {
               <Route path="/hats" element={<HatsPage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/express-checkout" element={<ExpressCheckoutPage />} />
+              <Route path="/checkout-e" element={<CheckoutPageE/>} />
+              <Route path="/checkout" element={<CheckoutPageN/>} />
             </Routes>
           </div>
     </>
