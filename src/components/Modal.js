@@ -3,6 +3,7 @@ import "./Styles/StyleModal.css";
 import { useCartContext } from "./Context/useCart";
 import { useExpressCheckoutContext } from "./Context/useExpressCheckout";
 import { Link } from "react-router-dom";
+import { useProductContext } from "./Context/useProduct";
 
 export default function Modal(props) {
   const [productDetails, setProductsDetails] = useState(null);
@@ -10,6 +11,7 @@ export default function Modal(props) {
   const API_URL = process.env.REACT_APP_API_URL;
   const cart = useCartContext();
   const express = useExpressCheckoutContext();
+  const prod = useProductContext()
 
   useEffect(() => {
     fetch(`${API_URL}products-details/${props.selectedId}/`)
@@ -26,6 +28,7 @@ export default function Modal(props) {
   const [selectedVariantId, setSelectedVariantId] = useState(null);
   const [selectedVariantPrice, setSelectedVariantPrice] = useState(null);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [previewImg, setPreviewImg] = useState(null);
 
   let colorOptions = [];
   let sizeOptions = [];
@@ -99,6 +102,7 @@ export default function Modal(props) {
   }, [productDetails]);
 
   function fetchVariantOnAdd() {
+    cart.setEditQty(prod.initialProductQty)
     setIsButtonDisabled(true);
     setTimeout(() => {
       setIsButtonDisabled(false);
@@ -114,6 +118,7 @@ export default function Modal(props) {
 
   //Express checkout logic START
   function fetchVariantOnAddEXPRESS() {
+    express.setExpressEditQty(prod.initialProductQty)
     selectedVariantId &&
       fetch(`${API_URL}variant-details/${selectedVariantId}/`)
         .then((response) => response.json())
@@ -129,6 +134,28 @@ export default function Modal(props) {
     setSelectedSize(sizeOptions[0]);
   }
 
+  const handleChange = (value) => {
+    let inputValue = value;
+    if (inputValue === "") {
+      prod.setInitialProductQty("");
+    } else if (inputValue < 1) {
+      prod.setInitialProductQty(1);
+    } else if (inputValue > 100) {
+      prod.setInitialProductQty(100);
+    } else {
+      prod.setInitialProductQty(inputValue);
+    }
+  };
+
+
+  useEffect(() => {
+    if (selectedColor && productDetails) {
+      const variant = productDetails?.result?.sync_variants?.find(variant => variant?.name?.includes(selectedColor));
+      if (variant) {
+        setPreviewImg(variant?.files[1]?.preview_url);
+      }
+    }
+  }, [selectedColor, productDetails]);
   return (
     <div className="modal">
       <div className="modal-content">
@@ -142,7 +169,7 @@ export default function Modal(props) {
             <img
               alt="product"
               width="350px"
-              src={productDetails.result.sync_product.thumbnail_url}
+              src={!previewImg ? productDetails.result.sync_product.thumbnail_url : previewImg}
             />
             <p>£{selectedVariantPrice}</p>
             <form>
@@ -217,6 +244,21 @@ export default function Modal(props) {
                 EXPRESS CHECKOUT
               </button>
             </Link>
+            <div>
+              <label>
+                Quantity:
+                <input
+                  value={prod.initialProductQty}
+                  onChange={(e) => {
+                    handleChange(e.target.value);
+                  }}
+                  type="number"
+                  min="1"
+                  max="100"
+                  required
+                />
+              </label>
+            </div>
           </div>
         )}
       </div>

@@ -9,6 +9,7 @@ export const ProductContext = createContext(undefined);
 export const ProductContextProvider = ({ context, children, fetchType }) => {
   const API_URL = process.env.REACT_APP_API_URL
   const [products, setProducts] = useState(null);
+  const [initialProductQty, setInitialProductQty] = useState(1);
   useEffect(() => {
     async function getProducts() {
       try {
@@ -50,6 +51,8 @@ export const ProductContextProvider = ({ context, children, fetchType }) => {
   let contextData = {
     products: products,
     mappedProducts: mappedProducts,
+    initialProductQty: initialProductQty,
+    setInitialProductQty : setInitialProductQty,
     ...context,
   };
   return (

@@ -1,6 +1,7 @@
 import React from "react";
 import { useExpressCheckoutContext } from "../Context/useExpressCheckout";
 import ExpressCheckoutModal from "./ExpressCheckoutModal";
+import { Link } from "react-router-dom";
 
 function ExpressCheckoutPage() {
   const express = useExpressCheckoutContext();
@@ -39,7 +40,9 @@ function ExpressCheckoutPage() {
         </div>
       ))}
       {express.expressBasket.length > 0 && (
+        <Link to="/checkout-e">
         <button type="button"> Checkout</button>
+        </Link>
       )}
       {express.selectedEditItem && <ExpressCheckoutModal />}
 

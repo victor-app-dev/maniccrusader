@@ -26,10 +26,10 @@ export const ExpressCheckoutContextProvider = ({ context, children }) => {
       }
       useEffect(() => {
         const sum = expressBasket.reduce((acc, item) => {
-          const retailPrice = parseInt(item.result.retail_price);
+          const retailPrice = parseFloat(item.result.retail_price);
           return acc + retailPrice;
         }, 0);
-        setPriceExclShippingExpress(sum);
+        setPriceExclShippingExpress(sum.toFixed(2));
       }, [expressBasket]);
 
 

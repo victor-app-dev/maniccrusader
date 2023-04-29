@@ -7,6 +7,7 @@ export default function CartItemModal() {
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedVariantId, setSelectedVariantId] = useState(null);
+  const [previewImg, setPreviewImg] = useState(null);
 
   let colorOptions = [];
   let sizeOptions = [];
@@ -120,6 +121,15 @@ export default function CartItemModal() {
     setSelectedSize(size);
   }
 
+  useEffect(() => {
+    if (selectedColor && localProductInfo) {
+      const variant = localProductInfo?.result?.sync_variants?.find(variant => variant?.name?.includes(selectedColor));
+      if (variant) {
+        setPreviewImg(variant?.files[1]?.preview_url);
+      }
+    }
+  }, [selectedColor, localProductInfo]);
+
   return (
     <>
       <div className="modal">
@@ -137,7 +147,7 @@ export default function CartItemModal() {
             <img
               width="200px"
               alt="edit proudcts"
-              src={cart.selectedEditItem?.result?.files[1]?.preview_url}
+              src={!previewImg ? cart.selectedEditItem?.result?.files[1]?.preview_url : previewImg}
             />
             <p>£{cart.selectedEditItem.result.retail_price}</p>
             <div>
