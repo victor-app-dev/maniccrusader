@@ -1,11 +1,16 @@
 import React from "react";
+import { CheckoutContextProvider } from "../Context/useCheckout";
+import { CartContextProvider } from "../Context/useCart";
+import CheckoutSystem from "./CheckoutSystem";
 
 function CheckoutPageN() {
-
   return (
     <>
-        Im the normal checkout
-
+      <CartContextProvider>
+        <CheckoutContextProvider>
+          <CheckoutSystem />
+        </CheckoutContextProvider>
+      </CartContextProvider>
     </>
   );
 }

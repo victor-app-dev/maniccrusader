@@ -1,0 +1,28 @@
+.form-del {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .input-del, .select-del {
+    margin-bottom: 10px;
+    width: 300px;
+    height: 30px;
+    border-radius: 5px;
+    border: 1px solid gray;
+    padding: 5px;
+    font-size: 15px;
+  }
+  
+  .select-del{
+    width: 310px;
+  }
+  .label-del {
+    display: inline-block;
+    width: 150px;
+    text-align: left;
+    padding-right: 150px;
+    font-size: 16px;
+  }
+  
